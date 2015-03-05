@@ -19,9 +19,9 @@ load = do
     define "roll"  $ popI >>= roll
     define "rot"   $ roll 2
     define "drop"  $ pop >> return ()
-    define "over"  $ pick 2
+    define "over"  $ pick 1
     define "swap"  $ roll 1
-    define "dup"   $ dup
+    define "dup"   $ pick 0
     define "2dup"  $ twodup
     define "+"     $ twomap (+)
     define "-"     $ twomap (-)
@@ -63,9 +63,6 @@ roll :: Int -> VM ()
 roll n = uses stack (splitAt n) >>= go where
     go (xs, y:ys) = stack .= (y:xs ++ ys)
     go (_,  [])   = throwError (AddressOutOfBounds n)
-
-dup :: VM ()
-dup = pick 1
 
 twodup :: VM ()
 twodup = pick 2 >> pick 2
