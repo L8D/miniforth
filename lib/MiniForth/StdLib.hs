@@ -14,6 +14,7 @@ import MiniForth.Types
 load :: VM ()
 load = do
     define "."     $ pop >>= output
+    define ","     $ pop >> return ()
     define "rand"  $ getRandomR (0, 1) >>= push
     define "pick"  $ popI >>= pick
     define "roll"  $ popI >>= roll

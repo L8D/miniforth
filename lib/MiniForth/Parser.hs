@@ -15,7 +15,7 @@ programParser = do
 
 tokenParser :: Parsec String () Token
 tokenParser = wordParser <|> numberParser <|> defParser where
-    specials = oneOf "!#$%&|*+-/<=>?@^_~."
+    specials = oneOf "!#$%&|*+-/<=>?@^,_~."
 
     wordParser = fmap Word wordp
 
