@@ -4,6 +4,7 @@ module MiniForth.Parser
 
 import Text.Parsec.Number
 import Text.Parsec
+import Data.Maybe         (isJust)
 import Data.Char          (toLower)
 
 import MiniForth.Types
@@ -17,16 +18,19 @@ programParser = do
 
 tokenParser :: Parsec String () Token
 tokenParser = wordParser <|> numberParser <|> defParser where
-    specials = oneOf "!#$%&|*+-/<=>?@^,_~."
+    specials = oneOf "!#$%&|*+/<=>?@^,_~."
 
     wordParser = fmap Word wordp
 
     wordp = do
         c <- letter <|> specials
-        cs <- many (letter <|> specials <|> digit <|> char ':')
+        cs <- many (letter <|> specials <|> digit <|> oneOf ":-")
         return (map toLower (c:cs))
 
-    numberParser = fmap Number (floating3 True)
+    numberParser = do
+        neg <- fmap isJust $ optionMaybe $ char '-'
+        n <- floating3 True
+        return $ Number $ if neg then negate n else n
 
     defParser = do
         _ <- char ':'
