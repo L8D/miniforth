@@ -9,6 +9,7 @@ import MiniForth.Types
 
 programParser :: Parsec String () [Token]
 programParser = do
+    spaces
     ts <- tokenParser `sepEndBy` spaces
     eof
     return ts
