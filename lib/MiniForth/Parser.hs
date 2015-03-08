@@ -4,6 +4,7 @@ module MiniForth.Parser
 
 import Text.Parsec.Number
 import Text.Parsec
+import Data.Char          (toLower)
 
 import MiniForth.Types
 
@@ -23,7 +24,7 @@ tokenParser = wordParser <|> numberParser <|> defParser where
     wordp = do
         c <- letter <|> specials
         cs <- many (letter <|> specials <|> digit <|> char ':')
-        return (c:cs)
+        return (map toLower (c:cs))
 
     numberParser = fmap Number (floating3 True)
 
